@@ -153,7 +153,7 @@ def ImageWeather(weather, onehour, tomorrow, tendency):
   temp2 = round(onehour.temperature('celsius')['temp'], 1)
   output=str(temp1) + '°C'
   draw.text((10, 0),output ,align='center',index=1,fill=Black,font=font)
-  image.alpha_composite(Image.open('./icons/tendency_'+getTendency(temp1, temp2)+'.png'), dest=(90,5))
+  image.alpha_composite(Image.open('./icons/tendency/'+getTendency(temp1, temp2)+'.png'), dest=(90,5))
   output=str(temp2) + '°C'
   draw.text((120, 0),output ,align='center',index=1,fill=Black,font=font)
 
