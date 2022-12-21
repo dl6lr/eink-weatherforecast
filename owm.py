@@ -11,33 +11,14 @@ from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
 import io
 from datetime import datetime, tzinfo
+import yaml
 
-# configuration section
-#
-# OWM API key
-api_key = '<your-api-key>'
-
-# Location and country to be used for the queries
-location = '<your-city>'
-country = 'DE'
-
-# Filename used for the generated image
-fname = 'weather.png'
-
-# Big font for the temperature
-bigfont = 'fonts/VeraSe18.pil'
-
-# Small font for the pressure
-smallfont = 'fonts/VeraSe12.pil'
-
-# global owm configuration
-config_dict = get_default_config()
-config_dict['language'] = 'en'  # your language here
+config = yaml.safe_load(open("config.yml"))
 
 #
 # getOneCall: requests current weather and forecasts in one call
 #
-def getOneCall(api_key, location, country):
+def getOneCall(owm_config):
   '''
   requests current weather and forecasts in one call
 
@@ -48,10 +29,14 @@ def getOneCall(api_key, location, country):
 
     Returns: OWM onecall data structure
   '''
-  owm = OWM(api_key, config_dict)
+  # global owm configuration
+  config_dict = get_default_config()
+  config_dict['language'] = owm_config['language']
+
+  owm = OWM(owm_config['api_key'], config_dict)
 
   geo = owm.geocoding_manager()
-  homelist = geo.geocode(location, country = country)
+  homelist = geo.geocode(owm_config['location'], country = owm_config['country'])
   home = homelist[0]
 
   mgr = owm.weather_manager()
@@ -148,7 +133,7 @@ def ImageWeather(weather, onehour, tomorrow, tendency):
   image=Image.new("RGBA",(296,128),color=White)
   draw = ImageDraw.Draw(image)
 
-  font = ImageFont.load(bigfont)
+  font = ImageFont.load(config['fonts']['big'])
   temp1 = round(weather.temperature('celsius')['temp'], 1)
   temp2 = round(onehour.temperature('celsius')['temp'], 1)
   output=str(temp1) + '°C'
@@ -157,7 +142,7 @@ def ImageWeather(weather, onehour, tomorrow, tendency):
   output=str(temp2) + '°C'
   draw.text((120, 0),output ,align='center',index=1,fill=Black,font=font)
 
-  font = ImageFont.load(smallfont)
+  font = ImageFont.load(config['fonts']['small'])
   press1 = weather.barometric_pressure()['press']
   press2 = tomorrow.barometric_pressure()['press']
   output=str(press1) + 'hPa'
@@ -178,7 +163,7 @@ def ImageWeather(weather, onehour, tomorrow, tendency):
   img_buf.close()
 
   image=image.rotate(90,expand=True)
-  image.save(fname)
+  image.save(config['output']['filename'])
   return image
 
 #
@@ -204,6 +189,6 @@ def getTendency(val1, val2):
 
 # main program
 
-one_call = getOneCall(api_key, location, country)
+one_call = getOneCall(config['owm'])
 image = ImageWeather(one_call.current, one_call.forecast_hourly[1], one_call.forecast_daily[1], one_call.forecast_hourly)
 

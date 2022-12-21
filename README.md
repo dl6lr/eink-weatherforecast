@@ -8,12 +8,12 @@ using their OneCall-API v2.5
 
 # Prerequisites
 
-The python script currently uses Python 3.9.2 with Pillow 9.3.0, pyowm 3.3.0 and matplotlib 3.6.2
+The python script currently uses Python 3.9.2 with PyYAML 6.0, Pillow 9.3.0, pyowm 3.3.0 and matplotlib 3.6.2
 Especially if you run the scripts from cron, make sure the packages are installed in the system, not in the user path only.
 Make sure you have the right version installed in the system paths, it is quite confusing if you test the scripts as a regular user and exhibit strange behaviour when run from cron due to different versions installed in the system and user path. Don't ask how I know...
 To access OpenWeatherMap, you need to create a free account and generate an API key.
 
-    sudo pip install pyowm Pillow matplotlib
+    sudo pip install pyowm Pillow matplotlib pyyaml
 
 # The generated image
 
@@ -30,24 +30,21 @@ Image created on December 9th, 2022 at 10:40:54
 
 # Configuration
 
-Paste your OWM API key to owm.py and set your city. Change the country if required:
+Configuration is done in config.yml that resides beneath owm.py. If you download the package for the first time, copy the sample file to config.yl and edit it.
+Paste your OWM API key to config.yml and set your city and country:
 
-    # configuration section
-    #
-    # OWM API key
-    api_key = '0123456789...abcdef'
+    owm:
+        api_key: 0123456789...abcdef
+        location: Hamburg
+        country: DE
 
-    # Location and country to be used for the queries
-    location = 'Hamburg'
-    country = 'DE'
-
-See more configurable values in the configuration section.
+See more configurable values in the configuration file.
 
 Running the script with:
 
     python owm.py
 
-should give no error message and the file weather.png should be updated. Note that the image is rotated by 0 degrees ccw to fit the price tags orientation with the barcode to the left.
+should give no error message and the file weather.png should be updated. Note that the image is rotated by 90 degrees ccw to fit the price tags orientation with the barcode to the left.
 
 # Known bugs
 

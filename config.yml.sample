@@ -1,0 +1,12 @@
+owm:
+    api_key: <your_api_key>
+    location: <your_city>
+    country: <your_country>
+    language: en
+
+output:
+    filename: weather.png
+
+fonts:
+    small: fonts/VeraSe12.pil
+    big: fonts/VeraSe18.pil
