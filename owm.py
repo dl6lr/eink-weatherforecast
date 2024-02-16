@@ -163,7 +163,7 @@ def ImageWeather(weather, onehour, tomorrow, tendency):
   image.alpha_composite(im, dest=(0, 35))
   img_buf.close()
 
-  image=image.rotate(90,expand=True)
+  # image=image.rotate(90,expand=True)
   # if we use OpenEPaperLink, we have to use JPG and RGB
   # if we use estation, we have to use PNG
   fname = config['output']['filename']
