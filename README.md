@@ -19,7 +19,7 @@ To access OpenWeatherMap, you need to create a free account and generate an API 
 
 A generated image looks similar to the following example:
 
-![weather display](https://github.com/dl6lr/eink-weatherforecast/blob/main/weather.png "weather display")
+![weather display](https://github.com/dl6lr/eink-weatherforecast/blob/main/weather.jpg "weather display")
 
 Description: 
 Current temperature -0.1°C, no change expected for the next hour. 
@@ -44,7 +44,7 @@ Running the script with:
 
     python owm.py
 
-should give no error message and the file weather.png should be updated. Note that the image is rotated by 90 degrees ccw to fit the price tags orientation with the barcode to the left.
+should give no error message and the file weather.jpg should be updated.  The image fits the price tags orientation with the barcode to the left.
 
 # Known bugs
 
