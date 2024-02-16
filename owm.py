@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import io
 from datetime import datetime, tzinfo
 import yaml
+import requests
 
 config = yaml.safe_load(open("config.yml"))
 
@@ -162,8 +163,15 @@ def ImageWeather(weather, onehour, tomorrow, tendency):
   image.alpha_composite(im, dest=(0, 35))
   img_buf.close()
 
-  image=image.rotate(90,expand=True)
-  image.save(config['output']['filename'])
+  # image=image.rotate(90,expand=True)
+  # if we use OpenEPaperLink, we have to use JPG and RGB
+  # if we use estation, we have to use PNG
+  fname = config['output']['filename']
+  if (fname.upper().endswith('.JPG')):
+    image=image.convert('RGB')
+    image.save(fname, 'JPEG', quality="maximum")
+  else:
+    image.save(fname)
   return image
 
 #
@@ -187,8 +195,27 @@ def getTendency(val1, val2):
   else:
     return 'equal'
 
+#
+# push image to OpenEPaperLink AP
+#
+def pushImage(image_path, cfg_oepl):
+  # Prepare the HTTP POST request
+  url = "http://" + cfg_oepl['apip'] + "/imgupload"
+  payload = {"dither": 0, "mac": cfg_oepl['mac']}  # Additional POST parameter
+  files = {"file": open(image_path, "rb")}  # File to be uploaded
+
+  # Send the HTTP POST request
+  response = requests.post(url, data=payload, files=files)
+
+  # Check the response status
+  if response.status_code == 200:
+    print("Image uploaded successfully!")
+  else:
+    print("Failed to upload the image.")
+
 # main program
 
 one_call = getOneCall(config['owm'])
 image = ImageWeather(one_call.current, one_call.forecast_hourly[1], one_call.forecast_daily[1], one_call.forecast_hourly)
-
+if ('openepaperlink' in config):
+  pushImage(config['output']['filename'], config['openepaperlink'])

@@ -5,8 +5,13 @@ owm:
     language: en
 
 output:
-    filename: weather.png
+    filename: weather.jpg
 
 fonts:
     small: fonts/VeraSe12.pil
     big: fonts/VeraSe18.pil
+
+openepaperlink:
+    apip: 192.168.1.2
+    mac: 0123456789ab
+
