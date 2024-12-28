@@ -22,11 +22,11 @@ A generated image looks similar to the following example:
 ![weather display](https://github.com/dl6lr/eink-weatherforecast/blob/main/weather.jpg "weather display")
 
 Description: 
-Current temperature -0.1�C, no change expected for the next hour. 
-Current pressure 1005hPa, rising to 1011hPa in the next 24 hours.
-Current condition cloudy.
+Current temperature 11°C, rising to 11.2°C in the next hour. 
+Current pressure 1010hPa, rising to 1028hPa in the next 24 hours.
+Current condition scattered with sun and rain.
 Graph for the next 48 hours, temperature in red, pressure in black.
-Image created on December 9th, 2022 at 10:40:54
+Image created on February 16th, 2024 at 10:17:03
 
 # Configuration
 
