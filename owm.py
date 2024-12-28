@@ -36,9 +36,9 @@ def getOneCall(owm_config):
 
   owm = OWM(owm_config['api_key'], config_dict)
 
-  geo = owm.geocoding_manager()
-  homelist = geo.geocode(owm_config['location'], country = owm_config['country'])
-  home = homelist[0]
+  reg = owm.city_id_registry()
+  list_of_locations = reg.locations_for(owm_config['location'], country = owm_config['country'], matching='exact')
+  home = list_of_locations[0]
 
   mgr = owm.weather_manager()
 
@@ -139,7 +139,8 @@ def ImageWeather(weather, onehour, tomorrow, tendency):
   temp2 = round(onehour.temperature('celsius')['temp'], 1)
   output=str(temp1) + '°C'
   draw.text((10, 0),output ,align='center',index=1,fill=Black,font=font)
-  image.alpha_composite(Image.open('./icons/tendency/'+getTendency(temp1, temp2)+'.png'), dest=(90,5))
+  ovl = Image.open('./icons/tendency/'+getTendency(temp1, temp2)+'.png')
+  image.alpha_composite(ovl, dest=(90,5))
   output=str(temp2) + '°C'
   draw.text((120, 0),output ,align='center',index=1,fill=Black,font=font)
 
@@ -152,7 +153,8 @@ def ImageWeather(weather, onehour, tomorrow, tendency):
   output=str(press2) + 'hPa'
   draw.text((120, 30),output ,align='center',index=1,fill=Black,font=font)
 
-  image.alpha_composite(Image.open('./icons/'+weather.weather_icon_name+'@2x.png'), dest=(196,0))
+  ovl = Image.open('./icons/'+weather.weather_icon_name+'@2x.png').convert('RGBA')
+  image.alpha_composite(ovl, dest=(196,0))
 
   font = ImageFont.load_default()
   draw.text((230, 100),time_string,index=1,fill=(0, 0, 0),font=font)
